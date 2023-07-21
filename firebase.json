@@ -3,6 +3,7 @@
     "public": "public",
     "rewrites": [{
       "source": "**",
+      "type": "module",
       "function": "api"
   }],
     "ignore": [
