@@ -1,20 +1,22 @@
-import express from 'express';
-import cors from 'cors';
-import { onRequest } from 'firebase-functions/v2/https';
+import functions from "firebase-functions";
+import express from "express";
+import cors from "cors";
+
+import { getAllEvents, addEvent, deleteEvent } from "./crud.js";
+const PORT = 3005;
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // allows access from other domain
+app.use(express.json()); // patch and post in json
 
-/* Root and 404 */
-app.get("/", (req,res) => {
-  res.status(200).send("Test");
-});
+app.get("/events", getAllEvents);
+app.post("/events", addEvent);
+app.delete("/events/:eventId", deleteEvent)
 
-app.get("/", getAllEvents)
+app.listen(PORT , () => {
+  console.log(`Listening on http://localhost:3005...`)
+})
 
-app.get("*", (req,res) => {
-  res.status(404).send("404 Not Found");
-});
+export const api = functions.https.onRequest(app);
 
-export const api = onRequest(app);
+
