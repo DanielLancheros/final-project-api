@@ -27,3 +27,15 @@ export async function deleteEvent (req, res) {
   }
   }
 
+  //CRUD: EDIT
+  export async function updateEvent (req, res) {
+      const eventId ={"_id": new ObjectId(req.params.eventId)}
+      const updateEvent = { $set: req.body }
+      const returnOption = { returnNewDocument: true }
+      const query = await coll.findOneAndUpdate( eventId, updateEvent, returnOption)
+      await getAllEvents(req,res)
+      res.status(201).send({ error: "Your event has been updated" })
+      console.table(query.value)
+    }
+  
+
